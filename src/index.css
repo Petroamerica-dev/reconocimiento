@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.slide-in-1 {
+    animation: slideInLeft 1s ease-out;
+}
+
+.slide-in-2 {
+    animation: slideInLeft 1.2s ease-out;
+}
+
+.fade-in {
+    animation: fadeIn 1.5s ease-out;
+}
