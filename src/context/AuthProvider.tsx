@@ -1,63 +1,177 @@
-import { createContext, useContext, useState } from "react";
-// import { PublicClientApplication, type AccountInfo } from "@azure/msal-browser";
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
-// const msalConfig = {
-//     auth: {
-//         clientId: import.meta.env.VITE_AZURE_CLIENT_ID,
-//         authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
-//         redirectUri: "http://localhost:5173",
-//     },
-// };
-
-const msalInstance: any = null;
+type User = {
+    userId: number;
+    email: string;
+    name: string;
+    bossId: number;
+};
 
 type AuthContextType = {
-    account: null;
+    user: User | null;
+    token: string | null;
+    isLoading: boolean;
     login: () => Promise<void>;
     logout: () => void;
-    token: string | null;
+    refreshToken: () => Promise<boolean>;
 };
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [account, setAccount] = useState<any | null>(null);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const loadStoredAuth = async () => {
+            try {
+                const storedToken = localStorage.getItem("accessToken");
+                const storedUser = localStorage.getItem("user");
+
+                if (storedToken && storedUser) {
+                    setToken(storedToken);
+                    setUser(JSON.parse(storedUser));
+
+                    const isValid = await verifyToken(storedToken, JSON.parse(storedUser)?.userId);
+                    if (!isValid) {
+                        const refreshed = await refreshToken();
+                        if (!refreshed) {
+                            logout();
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading stored auth:", error);
+                logout();
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadStoredAuth();
+    }, []);
+
+    const verifyToken = async (accessToken: string, userId: number): Promise<boolean> => {
+        try {
+            const response = await fetch(`${API_URL}/api/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+            return response.ok;
+        } catch {
+            return false;
+        }
+    };
 
     const login = async () => {
         try {
-            const resp = await msalInstance.loginPopup({
-                scopes: ["User.Read"],
-            });
-            const acc = resp.account!;
-            setAccount(acc);
+            setIsLoading(true);
 
-            const tokenResp = await msalInstance.acquireTokenSilent({
-                scopes: ["User.Read"],
-                account: acc,
-            });
+            const response = await fetch(`${API_URL}/auth/login`);
+            const { authUrl } = await response.json();
 
-            setToken(tokenResp.accessToken);
+            localStorage.setItem("returnUrl", window.location.pathname);
+
+            console.log(authUrl)
+            window.location.href = authUrl;
         } catch (err) {
             console.error("Login error:", err);
+            setIsLoading(false);
+        }
+    };
+
+    const handleCallback = async (code: string) => {
+        try {
+            setIsLoading(true);
+
+            const response = await fetch(`${API_URL}/auth/callback?code=${code}`);
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || "Error en autenticación");
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            setToken(data.accessToken);
+            setUser(data.user);
+
+            const returnUrl = localStorage.getItem("returnUrl") || "/dashboard";
+            localStorage.removeItem("returnUrl");
+            navigate(returnUrl);
+        } catch (error: any) {
+            console.error("Callback error:", error);
+            alert(error.message || "Error al iniciar sesión");
+            navigate("/login");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const refreshToken = async (): Promise<boolean> => {
+        try {
+            const storedRefreshToken = localStorage.getItem("refreshToken");
+
+            if (!storedRefreshToken) {
+                return false;
+            }
+
+            const response = await fetch(`${API_URL}/auth/refresh`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ refreshToken: storedRefreshToken }),
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem("accessToken", data.accessToken);
+            setToken(data.accessToken);
+
+            return true;
+        } catch (error) {
+            console.error("Refresh token error:", error);
+            return false;
         }
     };
 
     const logout = () => {
-        msalInstance.logoutPopup();
-        setAccount(null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+
         setToken(null);
+        setUser(null);
+
+        navigate("/login");
     };
 
-    // useEffect(() => {
-    //     const accounts = msalInstance.getAllAccounts();
-    //     if (accounts.length > 0) {
-    //         setAccount(accounts[0]);
-    //     }
-    // }, []);
-
     return (
-        <AuthContext.Provider value={{ account, login, logout, token }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                token,
+                isLoading,
+                login,
+                logout,
+                refreshToken
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
@@ -67,4 +181,13 @@ export const useAuth = () => {
     const ctx = useContext(AuthContext);
     if (!ctx) throw new Error("useAuth debe usarse dentro de AuthProvider");
     return ctx;
+};
+
+export const useAuthCallback = () => {
+    const context = useContext(AuthContext);
+    if (!context) throw new Error("useAuthCallback debe usarse dentro de AuthProvider");
+
+    return {
+        handleCallback: (context as any).handleCallback,
+    };
 };

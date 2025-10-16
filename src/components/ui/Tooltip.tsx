@@ -38,7 +38,7 @@ export default function Tooltip({ text, position = 'top', maxWidth = '100px' }: 
 
             {isVisible && (
                 <div
-                    className={`absolute z-50 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg whitespace-nowrap max-w-[${maxWidth}] ${positionClasses[position]}`}
+                    className={`absolute z-0 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg whitespace-nowrap max-w-[${maxWidth}] ${positionClasses[position]}`}
                 >
                     {text}
                     <div

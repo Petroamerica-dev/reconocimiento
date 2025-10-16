@@ -1,13 +1,28 @@
-// import { useAuth } from "@/context/AuthProvider";
+import { useEffect } from "react";
+import { useAuth } from "@/context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-    // const { login } = useAuth();
+    const { login, user, isLoading } = useAuth();
     const navigate = useNavigate();
 
-    const login = () => {
-        navigate("/main");
+    useEffect(() => {
+        if (user) {
+            navigate("/dashboard");
+        }
+    }, [user, navigate]);
+
+    const handleLogin = async () => {
+        await login();
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="relative h-screen overflow-hidden">
@@ -41,11 +56,11 @@ export default function Login() {
                     </div>
                     <div className="h-2 w-1/2  bg-sky-400" />
                     <p className="text-sm md:text-base text-gray-100 font-semibold">
-                        Un espacio donde celebramos tu talento y dedicación. Aquí reconocemos el esfuerzo que nos hace
+                        Un espacio donde celebramos el talento y dedicación. Aquí reconocemos el esfuerzo que nos hace
                         crecer juntos. Porque cada logro merece ser valorado y cada persona hace la diferencia.
                     </p>
                     <button
-                        onClick={login}
+                        onClick={handleLogin}
                         className="hover:bg-sky-500 hover:scale-[1.02] bg-sky-400 text-white px-4 py-2 rounded-4xl lg:w-1/2 w-full font-semibold cursor-pointer transition-all duration-200"
                     >
                         INGRESAR
