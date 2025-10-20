@@ -1,36 +1,59 @@
-import { Send } from "lucide-react";
 import CustomModal from "../ui/CustomModal";
 import CustomSelect from "../ui/CustomSelect";
-import { useRecognition } from "@/hooks/useRecognition";
-import ValueTypeSelect from "./RecognitionTypeSelect";
 import SearchEmployee from "./SearchEmployee";
+import type { RecognitionForm } from "@/types/recognition";
+import type { SelectOption, ValueOption } from "@/types/global";
+import { convertToFirstLetterUpperCase } from "@/utils/converters";
 
-export default function RecognitionForm() {
-    const {
-        recognitionForm,
-        messagePlaceholder,
-        modalData,
-        handleSubmit,
-        handleRecognitionFormChange,
-        setModalData,
-        loading,
-        valueOptions,
-        behaviorOptions
-    } = useRecognition();
+interface Props {
+    recognitionForm: RecognitionForm;
+    handleRecognitionFormChange: (key: keyof RecognitionForm, value: SelectOption | null | string) => void;
+    messagePlaceholder: string;
+    modalData: any;
+    setModalData: (modalData: any) => void;
+    loading: boolean;
+    valueOptions: ValueOption[];
+    behaviorOptions: any[];
+    handleSubmit: () => void;
+    backToStart: () => void;
+}
+
+export default function RecognitionForm({
+    recognitionForm,
+    handleRecognitionFormChange,
+    messagePlaceholder,
+    modalData,
+    setModalData,
+    loading,
+    valueOptions,
+    behaviorOptions,
+    handleSubmit,
+    backToStart
+}: Props) {
+    const Icon = valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.icon;
 
     return (
-        <div className="bg-white rounded-xl md:p-8 p-4 w-full">
+        <div className="bg-white rounded-xl md:p-8 p-4 w-full md:w-[550px]">
+            <div className="flex flex-row items-center gap-2 mb-4">
+                {Icon && (
+                    <div className={`w-15 h-15 p-1 rounded-full flex items-center justify-center ${valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.bgColorSecondary}`}>
+                        <Icon
+                            className={`w-8 h-8 text-white`}
+                        />
+                    </div>
+                )}
+                <div>
+                    <h3 className=" text-2xl">Estas reconociendo por:</h3>
+                    <h4 className={`text-3xl font-semibold ${valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.iconColor}`}>{convertToFirstLetterUpperCase(recognitionForm.value?.label || "")}</h4>
+                </div>
+            </div>
             <SearchEmployee
                 selectedValue={recognitionForm.employee}
                 handleSelect={
                     (value) => handleRecognitionFormChange("employee", value)
                 }
             />
-            <ValueTypeSelect
-                options={valueOptions}
-                selectedValue={recognitionForm.value}
-                onSelect={(key) => handleRecognitionFormChange("value", key)}
-            />
+
             {recognitionForm.value && (
                 <CustomSelect
                     label="¿Qué quieres reconocer específicamente? *"
@@ -53,11 +76,10 @@ export default function RecognitionForm() {
             </div>
             <button
                 onClick={handleSubmit}
-                className="cursor-pointer w-full bg-blue-400 text-white py-2 rounded-full font-semibold text-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-[1.01] transition-all duration-200  flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="cursor-pointer w-full bg-blue-500 text-white py-2 rounded-md font-semibold text-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-[1.01] transition-all duration-200  flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
             >
-                <Send className="w-5 h-5" />
-                Enviar Reconocimiento
+                Enviar reconocimiento
             </button>
 
             <CustomModal
@@ -66,6 +88,7 @@ export default function RecognitionForm() {
                 message={modalData.message}
                 icon={modalData.icon}
                 onClose={() => setModalData({ ...modalData, open: false })}
+                secondButton={() => backToStart()}
             />
         </div>
     );

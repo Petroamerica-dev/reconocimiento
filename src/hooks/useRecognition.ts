@@ -1,10 +1,10 @@
-import { useAuth } from "@/context/AuthProvider";
-import apiRecognition from "@/services/api/recognition";
-import apiUser from "@/services/api/user";
+// import { useAuth } from "@/context/AuthProvider";
+// import apiRecognition from "@/services/api/recognition";
+// import apiUser from "@/services/api/user";
 import apiValue from "@/services/api/value";
 import type { Behavior, ValueResponse } from "@/types/data";
 import type { SelectOption, ValueOption } from "@/types/global";
-import type { RecognitionForm, RecognitionRequest } from "@/types/recognition";
+import type { RecognitionForm, } from "@/types/recognition";
 import { valueStyles } from "@/utils/constants";
 import { useEffect, useState } from "react";
 
@@ -16,7 +16,7 @@ const initialRecognitionForm = {
 }
 
 export const useRecognition = () => {
-    const { user } = useAuth()
+    // const { user } = useAuth()
     const [loading, setLoading] = useState(true);
 
     const [recognitionForm, setRecognitionForm] = useState<RecognitionForm>({ ...initialRecognitionForm });
@@ -42,49 +42,48 @@ export const useRecognition = () => {
                 throw new Error("Por favor completa todos los campos requeridos");
             }
 
-            const recognitionRequest: RecognitionRequest = {
-                senderId: Number(user?.userId),
-                receiverId: Number(recognitionForm.employee.id),
-                behaviorId: Number(recognitionForm.behavior.id),
-                message: recognitionForm.message,
-            };
+            // const recognitionRequest: RecognitionRequest = {
+            //     senderId: Number(user?.userId),
+            //     receiverId: Number(recognitionForm.employee.id),
+            //     behaviorId: Number(recognitionForm.behavior.id),
+            //     message: recognitionForm.message,
+            // };
 
-            const response = await apiRecognition.create(recognitionRequest);
+            // const response = await apiRecognition.create(recognitionRequest);
 
-            const dataResponse = response.data;
+            // const dataResponse = response.data;
 
-            if (!dataResponse.success) {
-                throw new Error(dataResponse.error || "Error al crear reconocimiento");
-            }
+            // if (!dataResponse.success) {
+            //     throw new Error(dataResponse.error || "Error al crear reconocimiento");
+            // }
 
-            const recognitionResponse = dataResponse.recognition;
+            // const recognitionResponse = dataResponse.recognition;
 
-            if (!recognitionResponse) {
-                throw new Error("Error al crear reconocimiento");
-            }
+            // if (!recognitionResponse) {
+            //     throw new Error("Error al crear reconocimiento");
+            // }
 
-            const boss = await apiUser.getUserById(user?.bossId.toString() || "");
+            // const boss = await apiUser.getUserById(user?.bossId.toString() || "");
 
-            const emailResponse = await apiRecognition.sendEmail({
-                recognitionId: recognitionResponse.recognitionId,
-                to: recognitionForm.employee.label,
-                copy: boss?.data?.email,
-                recognition: recognitionResponse.message,
-                comentary: recognitionForm.message,
+            // const emailResponse = await apiRecognition.sendEmail({
+            //     recognitionId: recognitionResponse.recognitionId,
+            //     to: recognitionForm.employee.label,
+            //     copy: boss?.data?.email,
+            //     recognition: recognitionResponse.message,
+            //     comentary: recognitionForm.message,
+            // });
+
+            // if (emailResponse.data.success) {
+            setModalData({
+                open: true,
+                title: "¡Reconocimiento Enviado!",
+                message: `Has valorado el esfuerzo de un colaborador. Gracias por fortalecer la cultura en Petroamérica`,
+                icon: "success",
             });
 
-            if (emailResponse.data.success) {
-                setModalData({
-                    open: true,
-                    title: "¡Reconocimiento Enviado!",
-                    message: `Has reconocido a ${recognitionForm.employee.label} por su ${recognitionForm.value.label}`,
-                    icon: "success",
-                });
-                setRecognitionForm({ ...initialRecognitionForm });
-                setMessagePlaceholder("");
-            } else {
-                throw new Error("Error al enviar correo electrónico");
-            }
+            // } else {
+            //     throw new Error("Error al enviar correo electrónico");
+            // }
         } catch (error) {
             console.error("Error al enviar correo electrónico:", error);
             setModalData({
@@ -96,29 +95,40 @@ export const useRecognition = () => {
         } finally {
             setLoading(false);
         }
+
+
     };
 
     const handleRecognitionFormChange = (key: keyof RecognitionForm, value: SelectOption | string | null) => {
-        setRecognitionForm({ ...recognitionForm, [key]: value });
+        console.log(key, value)
+        setRecognitionForm(prevState => ({ ...prevState, [key]: value }));
         if (key === "value") {
-            const vf: ValueResponse | undefined = values.find(v => v.valueId === Number((value as SelectOption)?.id));
-            if (vf) {
-                setBehaviorOptions(vf.behaviors.map(b => ({
-                    id: b.behaviorId,
-                    label: b.description,
-                    value: b.behaviorId.toString(),
-                    tooltip: b.whenApplied
-                })));
-                setBehaviors(vf.behaviors);
+            if (value) {
+                const vf = values.find(v => v.valueId === Number((value as SelectOption)?.id));
+                if (vf) {
+                    setBehaviorOptions(vf.behaviors.map(b => ({
+                        id: b.behaviorId,
+                        label: b.description,
+                        value: b.behaviorId.toString(),
+                        tooltip: b.whenApplied
+                    })));
+                    setBehaviors(vf.behaviors);
+                }
+            } else {
+                setBehaviorOptions([]);
+                setBehaviors([]);
+                setMessagePlaceholder("");
             }
         } else if (key === "behavior") {
-            const bf: Behavior | undefined = behaviors.find(b => b.behaviorId === Number((value as SelectOption)?.id));
-            console.log(bf)
+            const bf = behaviors.find(b => b.behaviorId === Number((value as SelectOption)?.id));
             if (bf) {
                 setMessagePlaceholder(bf.suggestionText);
+            } else {
+                setMessagePlaceholder("");
             }
         }
     };
+
 
     const fetchValues = async () => {
         try {
@@ -131,12 +141,13 @@ export const useRecognition = () => {
                     shortDescription: v.shortDescription,
                     description: v.description,
                     bgColor: valueStyle.bgColor,
-                    bgGradient: valueStyle.bgGradient,
+                    bgColorSecondary: valueStyle.bgColorSecondary,
                     borderColor: valueStyle.borderColor,
                     color: valueStyle.color,
                     iconColor: valueStyle.iconColor,
                     shadowColor: valueStyle.shadowColor,
-                    icon: valueStyle.icon
+                    icon: valueStyle.icon,
+                    iconBgColor: valueStyle.iconBgColor
                 }
             });
             setValues(values.data);
@@ -163,6 +174,17 @@ export const useRecognition = () => {
         })()
     }, []);
 
+    const backToStart = () => {
+
+        setRecognitionForm({ ...initialRecognitionForm });
+        setMessagePlaceholder("");
+        window.scrollTo({
+            top: document.getElementById("value-select")?.offsetTop,
+            behavior: "smooth",
+        });
+        setModalData({ ...modalData, open: false });
+    };
+
     return {
         recognitionForm,
         messagePlaceholder,
@@ -172,6 +194,7 @@ export const useRecognition = () => {
         setModalData,
         loading,
         valueOptions,
-        behaviorOptions
+        behaviorOptions,
+        backToStart
     }
 }

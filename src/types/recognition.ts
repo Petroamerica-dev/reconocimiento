@@ -14,7 +14,7 @@ export interface RecognitionType {
     iconColor: string;
     bgColor: string;
     color: string;
-    bgGradient: string,
+    bgColorSecondary: string,
     borderColor: string;
     behaviors: BehaviorOption[];
     shortDescription: string;

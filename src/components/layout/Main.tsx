@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom"
 
 export default function MainLayout() {
     return (
-        <main className="h-full bg-gradient-to-r from-indigo-500 from-5% via-sky-500 via-30% to-blue-600 to-90%">
+        <main className="h-full bg-gradient-to-tr from-[#1381ee] to-[#3CA0F5]">
             {/* <Navbar /> */}
             <Outlet />
         </main>

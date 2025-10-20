@@ -12,29 +12,32 @@ export const employees: SelectOption[] = [
 export const valueStyles: Record<ValueType, ValueStyle> = {
     "LIDERAZGO": {
         icon: Award,
-        bgColor: 'bg-blue-50',
-        color: 'text-white',
-        iconColor: 'text-blue-400',
-        borderColor: 'border-blue-300',
+        bgColor: 'bg-[#65D0FA]',
+        color: 'text-blue-50',
+        iconColor: 'text-[#3CA1F0]',
+        iconBgColor: 'bg-blue-50',
+        borderColor: 'border-blue-500',
         shadowColor: "shadow-blue-800/25",
-        bgGradient: "bg-gradient-to-r from-blue-500 to-blue-700"
+        bgColorSecondary: "bg-blue-500"
     },
     "EFICIENCIA": {
         icon: Zap,
-        bgColor: 'bg-yellow-50',
-        color: 'text-white',
-        iconColor: 'text-yellow-400',
-        borderColor: 'border-yellow-300',
+        bgColor: 'bg-[#FAEFB1]',
+        color: 'text-[#9C743C]',
+        iconColor: 'text-[#FFD86D]',
+        iconBgColor: 'bg-yellow-50',
+        borderColor: 'border-yellow-500',
         shadowColor: "shadow-yellow-500/25",
-        bgGradient: "bg-gradient-to-r from-yellow-300 to-orange-300"
+        bgColorSecondary: "bg-yellow-500"
     },
     "TRABAJO EN EQUIPO": {
         icon: Users,
-        bgColor: 'bg-green-50',
+        bgColor: 'bg-[#85E1DE]',
         color: 'text-white',
-        iconColor: 'text-green-400',
-        borderColor: 'border-green-300',
+        iconColor: 'text-[#40C0B4]',
+        iconBgColor: 'bg-green-50',
+        borderColor: 'border-green-500',
         shadowColor: "shadow-green-500/25",
-        bgGradient: "bg-gradient-to-r from-green-500 to-lime-500"
+        bgColorSecondary: "bg-green-500"
     }
 };

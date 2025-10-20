@@ -86,37 +86,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const handleCallback = async (code: string) => {
-        try {
-            setIsLoading(true);
+    // const handleCallback = async (code: string) => {
+    //     try {
+    //         setIsLoading(true);
 
-            const response = await fetch(`${API_URL}/auth/callback?code=${code}`);
+    //         const response = await fetch(`${API_URL}/auth/callback?code=${code}`);
 
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || "Error en autenticación");
-            }
+    //         if (!response.ok) {
+    //             const error = await response.json();
+    //             throw new Error(error.message || "Error en autenticación");
+    //         }
 
-            const data = await response.json();
+    //         const data = await response.json();
 
-            localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("refreshToken", data.refreshToken);
-            localStorage.setItem("user", JSON.stringify(data.user));
+    //         localStorage.setItem("accessToken", data.accessToken);
+    //         localStorage.setItem("refreshToken", data.refreshToken);
+    //         localStorage.setItem("user", JSON.stringify(data.user));
 
-            setToken(data.accessToken);
-            setUser(data.user);
+    //         setToken(data.accessToken);
+    //         setUser(data.user);
 
-            const returnUrl = localStorage.getItem("returnUrl") || "/dashboard";
-            localStorage.removeItem("returnUrl");
-            navigate(returnUrl);
-        } catch (error: any) {
-            console.error("Callback error:", error);
-            alert(error.message || "Error al iniciar sesión");
-            navigate("/login");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    //         const returnUrl = localStorage.getItem("returnUrl") || "/dashboard";
+    //         localStorage.removeItem("returnUrl");
+    //         navigate(returnUrl);
+    //     } catch (error: any) {
+    //         console.error("Callback error:", error);
+    //         alert(error.message || "Error al iniciar sesión");
+    //         navigate("/login");
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
 
     const refreshToken = async (): Promise<boolean> => {
         try {

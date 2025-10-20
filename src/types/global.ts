@@ -16,9 +16,10 @@ export interface ValueStyle {
     bgColor: string;
     color: string;
     iconColor: string;
+    iconBgColor: string;
     borderColor: string;
     shadowColor: string;
-    bgGradient: string;
+    bgColorSecondary: string;
 }
 
 export type ValueOption = Value & ValueStyle

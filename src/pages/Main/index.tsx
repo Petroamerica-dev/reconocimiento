@@ -1,28 +1,53 @@
 import RecognitionForm from "@/components/common/RecognitionForm";
-import HoverCards from "@/components/common/HoverCards";
-import { ChevronsDown } from "lucide-react";
+import { useRecognition } from "@/hooks/useRecognition";
+import ValueTypeSelect from "@/components/common/RecognitionTypeSelect";
 export default function Main() {
+    const {
+        recognitionForm,
+        messagePlaceholder,
+        modalData,
+        handleSubmit,
+        handleRecognitionFormChange,
+        setModalData,
+        loading,
+        valueOptions,
+        behaviorOptions,
+        backToStart
+    } = useRecognition();
     return (
         <div className="flex flex-col justify-center items-center ">
-            <div className="lg:max-w-3/5  max-w-full lg:p-0 p-4 flex flex-col gap-2 items-center">
+            <div className="h-screen lg:max-w-3/5  max-w-full lg:p-0 p-4 flex flex-col gap-2 items-center justify-center" id="value-select">
                 <div className=" max-w-full  flex flex-col  items-center mt-10">
                     <p className="text-center text-white lg:text-4xl text-2xl font-semibold slide-in-1">
                         En Petroamérica creemos que el reconocimiento impulsa compromiso, confianza y orgullo por pertenecer
                     </p>
                     <br />
-                    <p className="text-center text-white mb-2 slide-in-2"><span className="font-semibold">Reconocer es fácil:</span> elige una competencia, selecciona el comportamiento que observaste y deja un mensaje sincero.</p>
+                    <p className="text-center text-lg text-white mb-2 slide-in-2">Elige la competencia que mejor refleje lo que quieres reconocer.</p>
                     <br />
-                    <HoverCards />
+                    <ValueTypeSelect
+                        key={recognitionForm.value?.value}
+                        options={valueOptions}
+                        selectedValue={recognitionForm.value}
+                        onSelect={(option) => handleRecognitionFormChange("value", option)}
+                        onClose={() => handleRecognitionFormChange("value", null)}
+                    />
                     <br />
-                    <button className="cursor-pointer fade-in" onClick={() => window.scrollTo({ top: document.getElementById("employee-recognition")?.offsetTop, behavior: 'smooth' })}>
-                        <ChevronsDown className="w-16 h-16 text-white" />
-                        <p className="text-gray-100 text-sm">Continuar</p>
-                    </button>
                 </div>
             </div>
-            <div className="lg:max-w-3/5  max-w-full lg:p-0 p-4 flex flex-col gap-2 items-center my-8" id="employee-recognition">
-                <h2 className="text-center text-white text-4xl font-semibold mb-10">Reconoce al colaborador</h2>
-                <RecognitionForm />
+            <div className="h-screen lg:max-w-3/5  max-w-full lg:p-0 p-4  flex flex-col gap-2 justify-center items-center " id="employee-recognition">
+                <RecognitionForm
+                    recognitionForm={recognitionForm}
+                    handleRecognitionFormChange={handleRecognitionFormChange}
+                    messagePlaceholder={messagePlaceholder}
+                    modalData={modalData}
+                    setModalData={setModalData}
+                    loading={loading}
+                    valueOptions={valueOptions}
+                    behaviorOptions={behaviorOptions}
+                    handleSubmit={handleSubmit}
+                    backToStart={backToStart}
+                />
+
             </div>
             <p className="text-center text-white text-xl slide-in-2 italic mb-8">
                 Un reconocimiento a tiempo vale más que mil felicitaciones tardías

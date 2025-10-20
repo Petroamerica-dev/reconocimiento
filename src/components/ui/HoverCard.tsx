@@ -1,5 +1,6 @@
 import type { ValueOption } from '@/types/global';
-import { useState } from 'react'
+import { convertToFirstLetterUpperCase } from '@/utils/converters';
+// import { useState } from 'react'
 
 interface Props {
     value: ValueOption,
@@ -8,7 +9,6 @@ interface Props {
 }
 
 export default function HoverCard({ value, activeCard, setActiveCard }: Props) {
-    const [showDescription, setShowDescription] = useState(false);
     return (
         <div
             key={value.valueId}
@@ -37,35 +37,20 @@ ${activeCard === value.valueId
             <div className="h-full flex flex-col justify-between text-center gap-2">
                 <div>
                     <h2 className={`text-3xl font-bold text-white  ${activeCard === value.valueId ? 'text-3xl' : 'text-xl'}`}>
-                        {value.name}
+                        {convertToFirstLetterUpperCase(value.name)}
                     </h2>
                 </div>
-                {showDescription && activeCard === value.valueId && (
-                    <p className={`text-white text-sm font-medium`}>
-                        {value.description}
-                    </p>
-                )}
+
+                <p className={`text-white text-sm font-medium`}>
+                    {value.shortDescription}
+                </p>
 
                 <div className="h-2 bg-white/20 rounded-full overflow-hidden mb-2">
                     <div
-                        className={`h-full ${value.bgGradient} rounded-full transition-all duration-700`}
+                        className={`h-full ${value.bgColorSecondary} rounded-full transition-all duration-700`}
                         style={{ width: activeCard === value.valueId ? '100%' : '60%' }}
                     />
                 </div>
-
-                <button
-                    onClick={() => setShowDescription(!showDescription)}
-                    className={`
-                cursor-pointer
-  w-full py-2 rounded-lg font-semibold
-  transition-all duration-300
-  ${activeCard === value.valueId
-                            ? 'bg-white/20 text-white border-2 border-white/30'
-                            : 'bg-white/10 text-gray-300 border-2 border-white/10'
-                        }
-`}>
-                    Ver {showDescription ? 'menos' : 'más'}
-                </button>
             </div>
         </div>
     )
