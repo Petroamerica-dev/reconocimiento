@@ -15,7 +15,7 @@ export default function App() {
       <Route path="/auth/callback" element={<Callback />} />
 
       <Route element={<MainLayout />}>
-        <Route index element={<Navigate to="/dashboard" />} />
+        <Route index element={<Navigate to="/main" />} />
         <Route
           path="/dashboard"
           element={

@@ -17,6 +17,6 @@ export default defineConfig({
       key: fs.readFileSync('server.key'),
       cert: fs.readFileSync('server.cert')
     },
-    port: 5173
+    port: 4504
   }
 })
