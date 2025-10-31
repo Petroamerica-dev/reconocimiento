@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import path from "path";
-import fs from 'fs';
 
 export default defineConfig({
   plugins: [
@@ -13,10 +12,10 @@ export default defineConfig({
     },
   },
   server: {
-    https: {
-      key: fs.readFileSync('server.key'),
-      cert: fs.readFileSync('server.cert')
-    },
-    port: 4504
+    // https: {
+    //   key: fs.readFileSync('server.key'),
+    //   cert: fs.readFileSync('server.cert')
+    // },
+    // port: 4504
   }
 })
