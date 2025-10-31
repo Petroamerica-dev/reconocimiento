@@ -11,11 +11,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
-    // https: {
-    //   key: fs.readFileSync('server.key'),
-    //   cert: fs.readFileSync('server.cert')
-    // },
-    // port: 4504
-  }
+  base: '/'
 })
