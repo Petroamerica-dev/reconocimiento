@@ -23,7 +23,7 @@ export default function CustomModal({
                 <div
                     className={`w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center`}
                 >
-                    {icon === "success" ? <img src="/img/success.png" alt="" /> : <img src="/img/error.png" alt="" />}
+                    {icon === "success" ? <img src="/reconocimiento/img/success.png" alt="" /> : <img src="/reconocimiento/img/error.png" alt="" />}
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-gray-800">{title}</h2>
                 <p className="text-gray-600 mb-6">{message}</p>

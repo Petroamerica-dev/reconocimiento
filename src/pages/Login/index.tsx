@@ -79,7 +79,7 @@ export default function Login() {
                     </div>
                 </div>
                 <div className="flex items-center justify-end lg:w-2/5 w-full">
-                    <img src="/img/bg-login.png" alt="" className="object-contain w-full h-full" />
+                    <img src="/reconocimiento/img/bg-login.png" alt="" className="object-contain w-full h-full" />
                 </div>
             </div>
         </div>

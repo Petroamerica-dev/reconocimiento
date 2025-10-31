@@ -16,7 +16,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <NavLink to="/dashboard">
             <img
-              src="/img/logo-petroamerica-light.png"
+              src="/reconocimiento/img/logo-petroamerica-light.png"
               alt="Logo"
               width={150}
             />
