@@ -1,6 +1,7 @@
 import RecognitionForm from "@/components/common/RecognitionForm";
 import { useRecognition } from "@/hooks/useRecognition";
 import ValueTypeSelect from "@/components/common/RecognitionTypeSelect";
+
 export default function Main() {
     const {
         recognitionForm,
@@ -14,27 +15,34 @@ export default function Main() {
         behaviorOptions,
         backToStart
     } = useRecognition();
+
     return (
-        <div className="flex flex-col justify-center items-center ">
-            <div className="h-screen lg:max-w-3/5  max-w-full lg:p-0 p-4 flex flex-col gap-2 items-center justify-center" id="value-select">
+        <div className="flex flex-col justify-center items-center">
+            <div className="xl:max-w-1/2 lg:max-w-4/5  max-w-full xl:p-0 lg:p-4 sm:p-10 p-5 flex flex-col gap-2 items-center justify-center" id="value-select">
                 <div className=" max-w-full  flex flex-col  items-center mt-10">
                     <p className="text-center text-white lg:text-4xl text-2xl font-semibold slide-in-1">
                         En Petroamérica creemos que el reconocimiento impulsa compromiso, confianza y orgullo por pertenecer
                     </p>
                     <br />
-                    <p className="text-center text-lg text-white mb-2 slide-in-2">Elige la competencia que mejor refleje lo que quieres reconocer.</p>
+                    <p className="text-center text-lg text-white mb-2 slide-in-2">Elige la competencia que mejor refleje lo que quieres reconocer</p>
                     <br />
                     <ValueTypeSelect
                         key={recognitionForm.value?.value}
                         options={valueOptions}
                         selectedValue={recognitionForm.value}
                         onSelect={(option) => handleRecognitionFormChange("value", option)}
-                        onClose={() => handleRecognitionFormChange("value", null)}
                     />
                     <br />
                 </div>
             </div>
-            <div className="h-screen lg:max-w-3/5  max-w-full lg:p-0 p-4  flex flex-col gap-2 justify-center items-center " id="employee-recognition">
+
+            <div
+                className={`xl:w-1/2 lg:w-4/5  w-full xl:p-0 lg:p-4 p-4 flex flex-col gap-2 items-center justify-center transition-all duration-700 ease-in-out ${recognitionForm.value
+                    ? 'opacity-100 translate-y-0 max-h-[5000px]'
+                    : 'opacity-0 translate-y-10 max-h-0 overflow-hidden'
+                    }`}
+                id="employee-recognition"
+            >
                 <RecognitionForm
                     recognitionForm={recognitionForm}
                     handleRecognitionFormChange={handleRecognitionFormChange}
@@ -47,8 +55,9 @@ export default function Main() {
                     handleSubmit={handleSubmit}
                     backToStart={backToStart}
                 />
-
+                <br />
             </div>
+
             <p className="text-center text-white text-xl slide-in-2 italic mb-8">
                 Un reconocimiento a tiempo vale más que mil felicitaciones tardías
             </p>

@@ -33,7 +33,7 @@ export default function RecognitionForm({
     const Icon = valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.icon;
 
     return (
-        <div className="bg-white rounded-xl md:p-8 p-4 w-full md:w-[550px]">
+        <div className="bg-white rounded-xl md:p-8 p-4 w-full">
             <div className="flex flex-row items-center gap-2 mb-4">
                 {Icon && (
                     <div className={`w-15 h-15 p-1 rounded-full flex items-center justify-center ${valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.bgColorSecondary}`}>
@@ -76,7 +76,7 @@ export default function RecognitionForm({
             </div>
             <button
                 onClick={handleSubmit}
-                className="cursor-pointer w-full bg-blue-500 text-white py-2 rounded-md font-semibold text-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-[1.01] transition-all duration-200  flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="cursor-pointer w-full bg-blue-500 text-white py-2 rounded-full font-semibold text-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-[1.01] transition-all duration-200  flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
             >
                 Enviar reconocimiento

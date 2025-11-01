@@ -5,14 +5,12 @@ interface RecognitionTypeSelectProps {
     options: ValueOption[];
     selectedValue: SelectOption | null;
     onSelect: (value: SelectOption | null) => void;
-    onClose: () => void;
 }
 
 export default function ValueTypeSelect({
     options,
     selectedValue,
     onSelect,
-    onClose
 }: RecognitionTypeSelectProps) {
     return (
         <div className="mb-8">
@@ -29,56 +27,26 @@ export default function ValueTypeSelect({
                                 value: v.valueId.toString(),
                                 tooltip: v.description
                             })}
-                            className={`xl:p-6 md:py-4 md:px-5 py-2 px-3 rounded-xl flex flex-col transition-all duration-500 ease-in-out transform ${isSelected ? "scale-105 h-fit border-4 shadow-lg" : "hover:-translate-y-2 h-72 border-2"} ${v.bgColor} ${isSelected ? v.borderColor : "border-transparent"} ${isSelected ? v.shadowColor : ""} gap-2 text-center`}
-
-
+                            className={`cursor-pointer rounded-xl flex flex-col transition-all duration-500 ease-in-out transform ${isSelected ? "scale-105 h-fit border-4 shadow-lg xl:p-10 md:py-8 md:px-7 py-6 px-5" : "hover:-translate-y-2 h-72 border-2 xl:p-6 md:py-4 md:px-5 py-2 px-3"} ${v.bgColor} ${isSelected ? v.borderColor : "border-transparent"} ${isSelected ? v.shadowColor : ""}  ${isSelected ? "md:my-0 my-5" : ""} gap-3 text-center`}
                         >
 
                             <div
-                                className={`w-16 h-16 mx-auto  rounded-full flex items-center justify-center ${isSelected ? v.bgColorSecondary : v.iconBgColor}`}
+                                className={`mx-auto rounded-full flex items-center justify-center ${isSelected ? `${v.bgColorSecondary} w-24 h-24` : `${v.iconBgColor} w-16 h-16`}`}
                             >
                                 <Icon
-                                    className={`w-8 h-8 ${isSelected ? "text-white" : v.iconColor}`}
+                                    className={`transition-all duration-500 ease-in-out ${isSelected ? "w-14 h-14 text-white" : `w-8 h-8 ${v.iconColor}`}`}
                                 />
                             </div>
                             <h3
-                                className={`text-2xl font-semibold ${v.color}`}
+                                className={`font-semibold transition-all duration-500 ease-in-out ${v.color} ${isSelected ? 'text-3xl' : 'text-2xl'}`}
                             >
                                 {convertToFirstLetterUpperCase(v.name)}
                             </h3>
                             <div className="overflow-hidden">
-                                <p className={`${v.color} transition-opacity duration-500 ${isSelected ? 'opacity-100 md:text-sm text-lg' : 'opacity-90 text-lg'}`}>
+                                <p className={`${v.color} transition-all duration-500 ease-in-out ${isSelected ? 'opacity-100' : 'opacity-90 '} text-lg`}>
                                     {isSelected ? v.description : v.shortDescription}
                                 </p>
                             </div>
-                            {isSelected && (
-                                <div
-                                    className="flex flex-col gap-2 animate-fadeIn"
-                                    style={{ animation: "fadeIn 0.4s ease-in-out" }}
-                                >
-                                    <button
-                                        className={`cursor-pointer bg-white px-4 py-2 rounded-md ${v.iconColor}`}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            window.scrollTo({
-                                                top: document.getElementById("employee-recognition")?.offsetTop,
-                                                behavior: "smooth",
-                                            });
-                                        }}
-                                    >
-                                        Continuar
-                                    </button>
-                                    <button
-                                        className={`cursor-pointer border-2 border-white px-4 py-2 rounded-md ${v.color}`}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            onClose();
-                                        }}
-                                    >
-                                        Cerrar
-                                    </button>
-                                </div>
-                            )}
                         </div>
                     );
                 })}

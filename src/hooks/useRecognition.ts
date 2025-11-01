@@ -100,7 +100,6 @@ export const useRecognition = () => {
     };
 
     const handleRecognitionFormChange = (key: keyof RecognitionForm, value: SelectOption | string | null) => {
-        console.log(key, value)
         setRecognitionForm(prevState => ({ ...prevState, [key]: value }));
         if (key === "value") {
             if (value) {
@@ -150,6 +149,7 @@ export const useRecognition = () => {
                     iconBgColor: valueStyle.iconBgColor
                 }
             });
+            console.log(values.data)
             setValues(values.data);
             setValueOptions(vo);
         } catch (error) {

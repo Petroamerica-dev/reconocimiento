@@ -113,7 +113,7 @@ export default function CustomSelect({
                                         <div
                                             key={option.id}
                                             onClick={() => handleSelect(option)}
-                                            className="px-4 py-3 hover:bg-indigo-50 cursor-pointer transition-colors flex items-center justify-between group"
+                                            className="px-4 py-4 hover:bg-indigo-50 cursor-pointer transition-colors flex items-center justify-between group"
                                         >
                                             <div className="flex-1 flex flex-col">
                                                 <span className="text-gray-800">{option.label}</span>

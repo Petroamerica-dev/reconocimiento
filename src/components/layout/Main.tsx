@@ -3,8 +3,7 @@ import { Outlet } from "react-router-dom"
 
 export default function MainLayout() {
     return (
-        <main className="h-full bg-gradient-to-tr from-[#1381ee] to-[#3CA0F5]">
-            {/* <Navbar /> */}
+        <main className="min-h-screen bg-gradient-to-tr from-[#1381ee] to-[#3CA0F5]">
             <Outlet />
         </main>
     )
