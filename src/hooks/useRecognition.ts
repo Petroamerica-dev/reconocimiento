@@ -1,10 +1,9 @@
-// import { useAuth } from "@/context/AuthProvider";
-// import apiRecognition from "@/services/api/recognition";
-// import apiUser from "@/services/api/user";
+import { useAuth } from "@/context/AuthProvider";
+import apiRecognition from "@/services/api/recognition";
 import apiValue from "@/services/api/value";
 import type { Behavior, ValueResponse } from "@/types/data";
 import type { SelectOption, ValueOption } from "@/types/global";
-import type { RecognitionForm, } from "@/types/recognition";
+import type { RecognitionForm, RecognitionRequest, } from "@/types/recognition";
 import { valueStyles } from "@/utils/constants";
 import { useEffect, useState } from "react";
 
@@ -16,7 +15,7 @@ const initialRecognitionForm = {
 }
 
 export const useRecognition = () => {
-    // const { user } = useAuth()
+    const { user } = useAuth()
     const [loading, setLoading] = useState(true);
 
     const [recognitionForm, setRecognitionForm] = useState<RecognitionForm>({ ...initialRecognitionForm });
@@ -42,48 +41,46 @@ export const useRecognition = () => {
                 throw new Error("Por favor completa todos los campos requeridos");
             }
 
-            // const recognitionRequest: RecognitionRequest = {
-            //     senderId: Number(user?.userId),
-            //     receiverId: Number(recognitionForm.employee.id),
-            //     behaviorId: Number(recognitionForm.behavior.id),
-            //     message: recognitionForm.message,
-            // };
+            const recognitionRequest: RecognitionRequest = {
+                senderId: Number(user?.userId),
+                receiverId: Number(recognitionForm.employee.id),
+                behaviorId: Number(recognitionForm.behavior.id),
+                message: recognitionForm.message,
+            };
 
-            // const response = await apiRecognition.create(recognitionRequest);
+            const response = await apiRecognition.create(recognitionRequest);
 
-            // const dataResponse = response.data;
+            const dataResponse = response.data;
 
-            // if (!dataResponse.success) {
-            //     throw new Error(dataResponse.error || "Error al crear reconocimiento");
-            // }
+            if (!dataResponse.success) {
+                throw new Error(dataResponse.error || "Error al crear reconocimiento");
+            }
 
-            // const recognitionResponse = dataResponse.recognition;
+            const recognitionResponse = dataResponse.recognition;
 
-            // if (!recognitionResponse) {
-            //     throw new Error("Error al crear reconocimiento");
-            // }
+            if (!recognitionResponse) {
+                throw new Error("Error al crear reconocimiento");
+            }
 
-            // const boss = await apiUser.getUserById(user?.bossId.toString() || "");
 
-            // const emailResponse = await apiRecognition.sendEmail({
-            //     recognitionId: recognitionResponse.recognitionId,
-            //     to: recognitionForm.employee.label,
-            //     copy: boss?.data?.email,
-            //     recognition: recognitionResponse.message,
-            //     comentary: recognitionForm.message,
-            // });
-
-            // if (emailResponse.data.success) {
-            setModalData({
-                open: true,
-                title: "¡Reconocimiento Enviado!",
-                message: `Has valorado el esfuerzo de un colaborador. Gracias por fortalecer la cultura en Petroamérica`,
-                icon: "success",
+            const emailResponse = await apiRecognition.sendEmail({
+                recognitionId: recognitionResponse.recognitionId,
+                to: recognitionForm.employee.label,
+                recognition: recognitionResponse.message,
+                comentary: recognitionForm.message,
             });
 
-            // } else {
-            //     throw new Error("Error al enviar correo electrónico");
-            // }
+            if (emailResponse.data.success) {
+                setModalData({
+                    open: true,
+                    title: "¡Reconocimiento Enviado!",
+                    message: `Has valorado el esfuerzo de un colaborador. Gracias por fortalecer la cultura en Petroamérica`,
+                    icon: "success",
+                });
+
+            } else {
+                throw new Error("Error al enviar correo electrónico");
+            }
         } catch (error) {
             console.error("Error al enviar correo electrónico:", error);
             setModalData({

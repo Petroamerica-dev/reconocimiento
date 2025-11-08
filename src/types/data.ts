@@ -5,6 +5,7 @@ export interface User {
     email: string;
     name: string;
     bossId: number;
+    area: string;
 }
 
 export interface Value {

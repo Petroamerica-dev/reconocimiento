@@ -34,7 +34,7 @@ export const useUser = () => {
                 setUserOptions(users.data.map((user) => ({
                     id: user.userId,
                     label: user.name,
-                    sublabel: user.email,
+                    sublabel: user.area,
                     value: user.userId.toString(),
                 })));
             } catch (error) {

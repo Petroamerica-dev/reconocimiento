@@ -33,7 +33,6 @@ export interface RecognitionForm {
 export interface RecognitionEmailRequest {
     recognitionId: number;
     to: string;
-    copy?: string;
     recognition: string;
     comentary: string;
 }
