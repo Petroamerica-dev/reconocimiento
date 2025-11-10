@@ -121,11 +121,9 @@ export const useRecognition = () => {
     const fetchValues = async () => {
         try {
             const coreValues = await apiCoreValue.getAll();
-            console.log(coreValues.data)
             const vo: ValueOption[] = coreValues.data.map(v => {
                 const coreValueUpp = v.name.toUpperCase();
                 const valueStyle = valueStyles[coreValueUpp as keyof typeof valueStyles];
-                console.log(valueStyle)
                 return {
                     core_value_id: v.core_value_id,
                     name: v.name,
@@ -141,7 +139,6 @@ export const useRecognition = () => {
                     iconBgColor: valueStyle.iconBgColor
                 }
             });
-            console.log(coreValues.data)
             setValues(coreValues.data);
             setValueOptions(vo);
         } catch (error) {

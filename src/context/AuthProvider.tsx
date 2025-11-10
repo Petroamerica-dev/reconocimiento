@@ -77,8 +77,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const { authUrl } = await response.json();
 
             localStorage.setItem("returnUrl", window.location.pathname);
-
-            console.log(authUrl)
             window.location.href = authUrl;
         } catch (err) {
             console.error("Login error:", err);
