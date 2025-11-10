@@ -2,10 +2,10 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 import { useNavigate } from "react-router-dom";
 
 type User = {
-    userId: number;
+    user_id: number;
     email: string;
     name: string;
-    bossId: number;
+    boss_id: number;
 };
 
 type AuthContextType = {
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     setToken(storedToken);
                     setUser(JSON.parse(storedUser));
 
-                    const isValid = await verifyToken(storedToken, JSON.parse(storedUser)?.userId);
+                    const isValid = await verifyToken(storedToken, JSON.parse(storedUser)?.user_id);
                     if (!isValid) {
                         const refreshed = await refreshToken();
                         if (!refreshed) {
@@ -56,9 +56,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loadStoredAuth();
     }, []);
 
-    const verifyToken = async (accessToken: string, userId: number): Promise<boolean> => {
+    const verifyToken = async (accessToken: string, user_id: number): Promise<boolean> => {
         try {
-            const response = await fetch(`${API_URL}/api/users/${userId}`, {
+            const response = await fetch(`${API_URL}/api/users/${user_id}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },

@@ -30,7 +30,7 @@ const Callback = () => {
                 localStorage.setItem("refreshToken", authData.refreshToken);
                 localStorage.setItem("user", JSON.stringify(authData.user));
 
-                const returnUrl = localStorage.getItem("returnUrl") || "/main";
+                const returnUrl = localStorage.getItem("returnUrl") || "/reconocimiento/main";
                 localStorage.removeItem("returnUrl");
 
                 window.location.href = returnUrl;

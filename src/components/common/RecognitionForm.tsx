@@ -1,4 +1,3 @@
-import CustomModal from "../ui/CustomModal";
 import CustomSelect from "../ui/CustomSelect";
 import SearchEmployee from "./SearchEmployee";
 import type { RecognitionForm } from "@/types/recognition";
@@ -9,26 +8,20 @@ interface Props {
     recognitionForm: RecognitionForm;
     handleRecognitionFormChange: (key: keyof RecognitionForm, value: SelectOption | null | string) => void;
     messagePlaceholder: string;
-    modalData: any;
-    setModalData: (modalData: any) => void;
     loading: boolean;
     valueOptions: ValueOption[];
     behaviorOptions: any[];
     handleSubmit: () => void;
-    backToStart: () => void;
 }
 
 export default function RecognitionForm({
     recognitionForm,
     handleRecognitionFormChange,
     messagePlaceholder,
-    modalData,
-    setModalData,
     loading,
     valueOptions,
     behaviorOptions,
     handleSubmit,
-    backToStart
 }: Props) {
     const Icon = valueOptions.find((v) => v.core_value_id === Number(recognitionForm.value?.value))?.icon;
 
@@ -81,15 +74,6 @@ export default function RecognitionForm({
             >
                 Enviar reconocimiento
             </button>
-
-            <CustomModal
-                isOpen={modalData.open}
-                title={modalData.title}
-                message={modalData.message}
-                icon={modalData.icon}
-                onClose={() => setModalData({ ...modalData, open: false })}
-                secondButton={() => backToStart()}
-            />
         </div>
     );
 }

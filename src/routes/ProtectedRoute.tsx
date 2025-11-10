@@ -14,10 +14,10 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
         );
     }
 
-    // if (!user) {
-    //     localStorage.setItem("returnUrl", location.pathname);
-    //     return <Navigate to="/login" replace />;
-    // }
+    if (!user) {
+        localStorage.setItem("returnUrl", location.pathname);
+        return <Navigate to="/login" replace />;
+    }
 
     return children;
 };

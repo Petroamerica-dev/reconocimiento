@@ -43,7 +43,7 @@ export const useRecognition = () => {
             }
 
             const recognitionRequest: RecognitionRequest = {
-                sender_id: Number(user?.userId),
+                sender_id: Number(user?.user_id),
                 receiver_id: Number(recognitionForm.employee.id),
                 behavior_id: Number(recognitionForm.behavior.id),
                 message: recognitionForm.message,
