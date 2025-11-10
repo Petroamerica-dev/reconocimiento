@@ -1,8 +1,8 @@
-import type { ValueResponse } from "@/types/data";
+import type { CoreValueResponse } from "@/types/data";
 import { api } from "../client";
 
-const apiValue = {
-    getAll: () => api.get<ValueResponse[]>('/values'),
+const apiCoreValue = {
+    getAll: () => api.get<CoreValueResponse[]>('/core-values'),
 };
 
-export default apiValue;
+export default apiCoreValue;

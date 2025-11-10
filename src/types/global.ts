@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import type { Value } from "./data";
+import type { CoreValue } from "./data";
 
 export interface SelectOption {
     id: number;
@@ -22,4 +22,4 @@ export interface ValueStyle {
     bgColorSecondary: string;
 }
 
-export type ValueOption = Value & ValueStyle
+export type ValueOption = CoreValue & ValueStyle

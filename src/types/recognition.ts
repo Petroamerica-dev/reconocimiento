@@ -38,8 +38,21 @@ export interface RecognitionEmailRequest {
 }
 
 export interface RecognitionRequest {
-    senderId: number;
-    receiverId: number;
-    behaviorId: number;
+    sender_id: number;
+    receiver_id: number;
+    behavior_id: number;
+    message?: string;
+}
+
+export interface RecognitionResponse {
+    success: boolean;
     message: string;
+    data?: {
+        recognition_id: number;
+        sender_id: number;
+        receiver_id: number;
+        behavior_id: 10;
+        message: string;
+        status: string,
+    }
 }

@@ -30,13 +30,13 @@ export default function RecognitionForm({
     handleSubmit,
     backToStart
 }: Props) {
-    const Icon = valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.icon;
+    const Icon = valueOptions.find((v) => v.core_value_id === Number(recognitionForm.value?.value))?.icon;
 
     return (
         <div className="bg-white rounded-xl md:p-8 p-4 w-full">
             <div className="flex flex-row items-center gap-2 mb-4">
                 {Icon && (
-                    <div className={`w-15 h-15 p-1 rounded-full flex items-center justify-center ${valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.bgColorSecondary}`}>
+                    <div className={`w-15 h-15 p-1 rounded-full flex items-center justify-center ${valueOptions.find((v) => v.core_value_id === Number(recognitionForm.value?.value))?.bgColorSecondary}`}>
                         <Icon
                             className={`w-8 h-8 text-white`}
                         />
@@ -44,7 +44,7 @@ export default function RecognitionForm({
                 )}
                 <div>
                     <h3 className=" text-2xl">Estas reconociendo por:</h3>
-                    <h4 className={`text-3xl font-semibold ${valueOptions.find((v) => v.valueId === Number(recognitionForm.value?.value))?.iconColor}`}>{convertToFirstLetterUpperCase(recognitionForm.value?.label || "")}</h4>
+                    <h4 className={`text-3xl font-semibold ${valueOptions.find((v) => v.core_value_id === Number(recognitionForm.value?.value))?.iconColor}`}>{convertToFirstLetterUpperCase(recognitionForm.value?.label || "")}</h4>
                 </div>
             </div>
             <SearchEmployee

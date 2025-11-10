@@ -1,12 +1,12 @@
 import apiUser from "@/services/api/user";
-import type { User } from "@/types/data";
+import type { SearchUser } from "@/types/data";
 import type { SelectOption } from "@/types/global";
 import { useCallback, useState, useEffect, useRef } from "react";
 
 export const useUser = () => {
     const [loading, setLoading] = useState(false);
     const [userOptions, setUserOptions] = useState<SelectOption[]>([]);
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<SearchUser[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     const debounceTimerRef = useRef<any | null>(null);
@@ -32,10 +32,10 @@ export const useUser = () => {
                 const users = await apiUser.search(searchTerm, 1, 10);
                 setUsers(users.data);
                 setUserOptions(users.data.map((user) => ({
-                    id: user.userId,
+                    id: user.user_id,
                     label: user.name,
-                    sublabel: user.area,
-                    value: user.userId.toString(),
+                    sublabel: user.area_name,
+                    value: user.user_id.toString(),
                 })));
             } catch (error) {
                 setError("Error fetching users");

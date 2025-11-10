@@ -18,7 +18,7 @@ export default function Main() {
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <div className="xl:max-w-1/2 lg:max-w-4/5  max-w-full xl:p-0 lg:p-4 sm:p-10 p-5 flex flex-col gap-2 items-center justify-center" id="value-select">
+            <div className="xl:max-w-2/3 lg:max-w-4/5  max-w-full xl:p-0 lg:p-4 sm:p-10 p-5 flex flex-col gap-2 items-center justify-center" id="value-select">
                 <div className=" max-w-full  flex flex-col  items-center mt-10">
                     <p className="text-center text-white lg:text-4xl text-2xl font-semibold slide-in-1">
                         En Petroamérica creemos que el reconocimiento impulsa compromiso, confianza y orgullo por pertenecer

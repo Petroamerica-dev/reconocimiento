@@ -1,26 +1,26 @@
-import type { ValueType } from "./global";
-
-export interface User {
-    userId: number;
-    email: string;
+export interface SearchUser {
+    user_id: number;
     name: string;
-    bossId: number;
-    area: string;
+    email: string;
+    area_name?: string;
+    boss_name?: string;
 }
 
-export interface Value {
-    valueId: number;
-    name: ValueType;
-    shortDescription: string;
+export interface CoreValue {
+    core_value_id: number;
+    name: string;
+    short_description: string;
     description: string;
 }
 
 export interface Behavior {
-    behaviorId: number;
-    valueId: number;
+    behavior_id: number;
+    core_value_id: number;
     description: string;
-    suggestionText: string;
-    whenApplied: string;
+    suggestion_text: string;
+    when_applied: string;
+    is_deleted: boolean;
+    created_at: Date;
 }
 
 export interface Recognition {
@@ -33,6 +33,6 @@ export interface Recognition {
     emailStatus: string;
 }
 
-export interface ValueResponse extends Value {
+export interface CoreValueResponse extends CoreValue {
     behaviors: Behavior[];
 }

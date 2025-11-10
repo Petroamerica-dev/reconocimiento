@@ -17,14 +17,14 @@ export default function ValueTypeSelect({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {options.map((v) => {
                     const Icon = v.icon;
-                    const isSelected = selectedValue?.value === v.valueId.toString();
+                    const isSelected = selectedValue?.value === v.core_value_id.toString();
                     return (
                         <div
-                            key={v.valueId}
+                            key={v.core_value_id}
                             onClick={() => onSelect({
-                                id: v.valueId,
+                                id: v.core_value_id,
                                 label: v.name,
-                                value: v.valueId.toString(),
+                                value: v.core_value_id.toString(),
                                 tooltip: v.description
                             })}
                             className={`cursor-pointer rounded-xl flex flex-col transition-all duration-500 ease-in-out transform ${isSelected ? "scale-105 h-fit border-4 shadow-lg xl:p-10 md:py-8 md:px-7 py-6 px-5" : "hover:-translate-y-2 h-72 border-2 xl:p-6 md:py-4 md:px-5 py-2 px-3"} ${v.bgColor} ${isSelected ? v.borderColor : "border-transparent"} ${isSelected ? v.shadowColor : ""}  ${isSelected ? "md:my-0 my-5" : ""} gap-3 text-center`}
@@ -44,7 +44,7 @@ export default function ValueTypeSelect({
                             </h3>
                             <div className="overflow-hidden">
                                 <p className={`${v.color} transition-all duration-500 ease-in-out ${isSelected ? 'opacity-100' : 'opacity-90 '} text-lg`}>
-                                    {isSelected ? v.description : v.shortDescription}
+                                    {isSelected ? v.description : v.short_description}
                                 </p>
                             </div>
                         </div>

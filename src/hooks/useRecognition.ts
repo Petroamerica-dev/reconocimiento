@@ -1,7 +1,8 @@
 import { useAuth } from "@/context/AuthProvider";
+import apiEmail from "@/services/api/email";
 import apiRecognition from "@/services/api/recognition";
-import apiValue from "@/services/api/value";
-import type { Behavior, ValueResponse } from "@/types/data";
+import apiCoreValue from "@/services/api/value";
+import type { Behavior, CoreValueResponse } from "@/types/data";
 import type { SelectOption, ValueOption } from "@/types/global";
 import type { RecognitionForm, RecognitionRequest, } from "@/types/recognition";
 import { valueStyles } from "@/utils/constants";
@@ -20,7 +21,7 @@ export const useRecognition = () => {
 
     const [recognitionForm, setRecognitionForm] = useState<RecognitionForm>({ ...initialRecognitionForm });
 
-    const [values, setValues] = useState<ValueResponse[]>([]);
+    const [coreValues, setValues] = useState<CoreValueResponse[]>([]);
     const [behaviors, setBehaviors] = useState<Behavior[]>([]);
 
     const [valueOptions, setValueOptions] = useState<ValueOption[]>([]);
@@ -42,9 +43,9 @@ export const useRecognition = () => {
             }
 
             const recognitionRequest: RecognitionRequest = {
-                senderId: Number(user?.userId),
-                receiverId: Number(recognitionForm.employee.id),
-                behaviorId: Number(recognitionForm.behavior.id),
+                sender_id: Number(user?.userId),
+                receiver_id: Number(recognitionForm.employee.id),
+                behavior_id: Number(recognitionForm.behavior.id),
                 message: recognitionForm.message,
             };
 
@@ -52,22 +53,13 @@ export const useRecognition = () => {
 
             const dataResponse = response.data;
 
-            if (!dataResponse.success) {
-                throw new Error(dataResponse.error || "Error al crear reconocimiento");
-            }
-
-            const recognitionResponse = dataResponse.recognition;
-
-            if (!recognitionResponse) {
+            if (!dataResponse.success || !dataResponse.data) {
                 throw new Error("Error al crear reconocimiento");
             }
 
-
-            const emailResponse = await apiRecognition.sendEmail({
-                recognitionId: recognitionResponse.recognitionId,
-                to: recognitionForm.employee.label,
-                recognition: recognitionResponse.message,
-                comentary: recognitionForm.message,
+            const emailResponse = await apiEmail.sendRecognition({
+                ...recognitionRequest,
+                recognition_id: dataResponse.data.recognition_id
             });
 
             if (emailResponse.data.success) {
@@ -100,13 +92,13 @@ export const useRecognition = () => {
         setRecognitionForm(prevState => ({ ...prevState, [key]: value }));
         if (key === "value") {
             if (value) {
-                const vf = values.find(v => v.valueId === Number((value as SelectOption)?.id));
+                const vf = coreValues.find(v => v.core_value_id === Number((value as SelectOption)?.id));
                 if (vf) {
                     setBehaviorOptions(vf.behaviors.map(b => ({
-                        id: b.behaviorId,
+                        id: b.behavior_id,
                         label: b.description,
-                        value: b.behaviorId.toString(),
-                        tooltip: b.whenApplied
+                        value: b.behavior_id.toString(),
+                        tooltip: b.when_applied
                     })));
                     setBehaviors(vf.behaviors);
                 }
@@ -116,9 +108,9 @@ export const useRecognition = () => {
                 setMessagePlaceholder("");
             }
         } else if (key === "behavior") {
-            const bf = behaviors.find(b => b.behaviorId === Number((value as SelectOption)?.id));
+            const bf = behaviors.find(b => b.behavior_id === Number((value as SelectOption)?.id));
             if (bf) {
-                setMessagePlaceholder(bf.suggestionText);
+                setMessagePlaceholder(bf.suggestion_text);
             } else {
                 setMessagePlaceholder("");
             }
@@ -128,13 +120,16 @@ export const useRecognition = () => {
 
     const fetchValues = async () => {
         try {
-            const values = await apiValue.getAll();
-            const vo = values.data.map(v => {
-                const valueStyle = valueStyles[v.name];
+            const coreValues = await apiCoreValue.getAll();
+            console.log(coreValues.data)
+            const vo: ValueOption[] = coreValues.data.map(v => {
+                const coreValueUpp = v.name.toUpperCase();
+                const valueStyle = valueStyles[coreValueUpp as keyof typeof valueStyles];
+                console.log(valueStyle)
                 return {
-                    valueId: v.valueId,
+                    core_value_id: v.core_value_id,
                     name: v.name,
-                    shortDescription: v.shortDescription,
+                    short_description: v.short_description,
                     description: v.description,
                     bgColor: valueStyle.bgColor,
                     bgColorSecondary: valueStyle.bgColorSecondary,
@@ -146,11 +141,11 @@ export const useRecognition = () => {
                     iconBgColor: valueStyle.iconBgColor
                 }
             });
-            console.log(values.data)
-            setValues(values.data);
+            console.log(coreValues.data)
+            setValues(coreValues.data);
             setValueOptions(vo);
         } catch (error) {
-            console.error("Error fetching values:", error);
+            console.error("Error fetching coreValues:", error);
         }
     };
 
