@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const verifyToken = async (accessToken: string, user_id: number): Promise<boolean> => {
         try {
-            const response = await fetch(`${API_URL}/api/users/${user_id}`, {
+            const response = await fetch(`${API_URL}/api/users/find-id/${user_id}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -83,38 +83,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setIsLoading(false);
         }
     };
-
-    // const handleCallback = async (code: string) => {
-    //     try {
-    //         setIsLoading(true);
-
-    //         const response = await fetch(`${API_URL}/auth/callback?code=${code}`);
-
-    //         if (!response.ok) {
-    //             const error = await response.json();
-    //             throw new Error(error.message || "Error en autenticación");
-    //         }
-
-    //         const data = await response.json();
-
-    //         localStorage.setItem("accessToken", data.accessToken);
-    //         localStorage.setItem("refreshToken", data.refreshToken);
-    //         localStorage.setItem("user", JSON.stringify(data.user));
-
-    //         setToken(data.accessToken);
-    //         setUser(data.user);
-
-    //         const returnUrl = localStorage.getItem("returnUrl") || "/dashboard";
-    //         localStorage.removeItem("returnUrl");
-    //         navigate(returnUrl);
-    //     } catch (error: any) {
-    //         console.error("Callback error:", error);
-    //         alert(error.message || "Error al iniciar sesión");
-    //         navigate("/login");
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // };
 
     const refreshToken = async (): Promise<boolean> => {
         try {

@@ -8,7 +8,7 @@ export default function Login() {
 
     useEffect(() => {
         if (user) {
-            navigate("/reconocimiento/main");
+            navigate("/main");
         }
     }, [user, navigate]);
 
