@@ -10,7 +10,7 @@ export default function HoverCards() {
             <div className="flex md:flex-row flex-col gap-6 items-center">
                 {valueOptions.map((vo) => (
                     <HoverCard
-                        key={vo.valueId}
+                        key={vo.core_value_id}
                         value={vo}
                         activeCard={activeCard}
                         setActiveCard={setActiveCard}

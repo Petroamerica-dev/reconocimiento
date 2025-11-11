@@ -4,10 +4,9 @@ import { useState } from "react";
 interface TooltipProps {
     text: string;
     position?: 'top' | 'bottom' | 'left' | 'right';
-    maxWidth?: string;
 }
 
-export default function Tooltip({ text, position = 'top', maxWidth = '100px' }: TooltipProps) {
+export default function Tooltip({ text, position = 'top'}: TooltipProps) {
     const [isVisible, setIsVisible] = useState(false);
 
     const positionClasses = {
