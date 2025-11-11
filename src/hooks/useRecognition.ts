@@ -92,6 +92,8 @@ export const useRecognition = () => {
         setRecognitionForm(prevState => ({ ...prevState, [key]: value }));
         if (key === "value") {
             if (value) {
+                setRecognitionForm(prevState => ({ ...prevState, behavior: null }));
+                setMessagePlaceholder("");
                 const vf = coreValues.find(v => v.core_value_id === Number((value as SelectOption)?.id));
                 if (vf) {
                     setBehaviorOptions(vf.behaviors.map(b => ({

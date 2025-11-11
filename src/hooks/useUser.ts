@@ -1,9 +1,11 @@
+import { useAuth } from "@/context/AuthProvider";
 import apiUser from "@/services/api/user";
 import type { SearchUser } from "@/types/data";
 import type { SelectOption } from "@/types/global";
 import { useCallback, useState, useEffect, useRef } from "react";
 
 export const useUser = () => {
+    const {user} = useAuth();
     const [loading, setLoading] = useState(false);
     const [userOptions, setUserOptions] = useState<SelectOption[]>([]);
     const [users, setUsers] = useState<SearchUser[]>([]);
@@ -29,7 +31,12 @@ export const useUser = () => {
 
         debounceTimerRef.current = setTimeout(async () => {
             try {
-                const users = await apiUser.search(searchTerm, 1, 10);
+                const users = await apiUser.search({
+                    searchTerm, 
+                    currentPage: 1,
+                    pageSize: 10,
+                    excludeUserId: user!.user_id
+                });
                 setUsers(users.data);
                 setUserOptions(users.data.map((user) => ({
                     id: user.user_id,

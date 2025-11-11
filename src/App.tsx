@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "@/pages/Dashboard";
+// import Dashboard from "@/pages/Dashboard";
 import Login from "@/pages/Login";
 import Callback from "@/pages/Callback";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import MainLayout from "./components/layout/Main";
-import Recognize from "./pages/Recognize";
-import MyRecognitions from "./pages/MyRecognitions";
+// import Recognize from "./pages/Recognize";
+// import MyRecognitions from "./pages/MyRecognitions";
 import Main from "./pages/Main";
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
 
       <Route element={<MainLayout />}>
         <Route index element={<Navigate to="/main" />} />
-        <Route
+        {/* <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
@@ -31,7 +31,7 @@ export default function App() {
               <Recognize />
             </ProtectedRoute>
           }
-        />
+        /> */}
         <Route
           path="/main"
           element={
@@ -40,14 +40,14 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/my-recognitions"
           element={
             <ProtectedRoute>
               <MyRecognitions />
             </ProtectedRoute>
           }
-        />
+        /> */}
       </Route>
     </Routes>
   );
